@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>NECUM.ONLINE</title>
+<style>
+:root{
+  --bg:#050505; --panel:#0b0b0b; --panel2:#101010; --line:#242424;
+  --text:#f2f2f2; --muted:#858585; --dim:#565656;
+  --green:#62ff9b; --red:#ff445c; --amber:#ffd56f; --blue:#79a9ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html.locked,body.locked{overflow:hidden!important}
+body{
+  margin:0;min-height:100vh;background:
+  radial-gradient(circle at 15% 0%,rgba(98,255,155,.03),transparent 28%),
+  radial-gradient(circle at 100% 25%,rgba(255,68,92,.025),transparent 25%),
+  var(--bg);color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
+.no-select{user-select:none}
+
+.topbar{
+  position:sticky;top:0;z-index:4000;height:72px;
+  border-bottom:1px solid var(--line);background:rgba(5,5,5,.92);backdrop-filter:blur(18px)
+}
+.topbar-inner{
+  max-width:1500px;height:100%;margin:auto;padding:0 34px;
+  display:flex;align-items:center;justify-content:space-between
+}
+.brand{
+  font:700 18px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.08em
+}
+.brand span{color:var(--green)}
+.top-actions{display:flex;align-items:center;gap:10px}
+.live{
+  color:#6d6d6d;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding-right:4px
+}
+.live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:7px;box-shadow:0 0 12px rgba(98,255,155,.5)}
+.icon{
+  width:42px;height:42px;border-radius:11px;border:1px solid var(--line);
+  background:#090909;color:#aaa;display:grid;place-items:center;transition:.18s
+}
+.icon:hover{color:#fff;border-color:#3b3b3b}
+
+.menu{
+  position:fixed;right:24px;top:86px;z-index:6000;
+  width:min(340px,calc(100vw - 32px));padding:9px;
+  background:rgba(8,8,8,.985);border:1px solid #2a2a2a;border-radius:16px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.985);transition:.18s
+}
+.menu.open{opacity:1;visibility:visible;transform:none}
+.menu a,.menu button{
+  width:100%;border:0;background:transparent;color:#c7c7c7;
+  border-radius:11px;padding:14px 13px;display:flex;justify-content:space-between;
+  text-align:left;align-items:center
+}
+.menu a:hover,.menu button:hover{background:#141414;color:#fff}
+.menu small{color:#606060;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em}
+.menu-divider{height:1px;background:#1c1c1c;margin:8px 0}
+
+.shell{max-width:1500px;margin:auto;padding:0 34px 90px}
+.view{display:none}.view.active{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:.2;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.home{
+  min-height:calc(100vh - 72px);display:grid;place-items:center;text-align:center;padding:40px 0
+}
+.home-inner{width:min(820px,100%);padding:50px 20px}
+.home-logo{
+  font:800 clamp(58px,9vw,132px)/.9 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:-.065em
+}
+.home-logo span{color:var(--green)}
+.home-rule{height:1px;background:linear-gradient(90deg,transparent,#343434,transparent);margin:28px auto 17px}
+.home-sub{color:#666;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.24em}
+.home-btn{margin-top:32px;min-width:200px}
+
+.page-head{padding:74px 0 30px}
+.page-head .back{margin-bottom:24px}
+.eyebrow{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.17em;color:#666;text-transform:uppercase}
+.page-head h1{
+  margin:15px 0 18px;font-size:clamp(54px,7vw,104px);line-height:.86;
+  letter-spacing:-.065em
+}
+.page-head p{max-width:790px;margin:0;color:#898989;line-height:1.8;font-size:14px}
+
+.btn{
+  border:1px solid #303030;background:#0d0d0d;color:#ededed;
+  border-radius:11px;padding:11px 14px;transition:.18s;font-size:13px
+}
+.btn:hover{border-color:#4a4a4a;transform:translateY(-1px)}
+.btn.green{background:var(--green);border-color:var(--green);color:#07100b;font-weight:800}
+.btn.red{color:#ff9fac;border-color:rgba(255,68,92,.36)}
+.btn.amber{color:#ffe7a5;border-color:rgba(255,213,111,.32)}
+.back{color:#8f8f8f}
+
+.panel{
+  border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#0e0e0e,#0a0a0a);
+  box-shadow:0 22px 70px rgba(0,0,0,.18)
+}
+.panel-pad{padding:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.list{display:grid;gap:10px}
+.row{
+  border:1px solid #1d1d1d;background:#090909;border-radius:13px;
+  padding:14px 15px;color:#8c8c8c;font-size:13px
+}
+.row b{color:#dedede}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{padding:17px;border:1px solid #1c1c1c;border-radius:14px;background:#090909}
+.kpi small{display:block;color:#5a5a5a;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}
+.kpi strong{display:block;font-size:21px;margin-top:9px}
+.green-t{color:var(--green)}.red-t{color:var(--red)}.amber-t{color:var(--amber)}
+
+.school-tabs{display:flex;gap:8px;margin-bottom:18px}
+.tab{
+  border:1px solid var(--line);background:#090909;color:#898989;
+  border-radius:10px;padding:10px 12px
+}
+.tab.active{background:#ebebeb;color:#111;border-color:#ebebeb;font-weight:800}
+.school-body{display:grid;grid-template-columns:1.08fr .92fr;gap:16px}
+.school-copy{padding:19px;border:1px solid #1d1d1d;border-radius:14px;background:#090909}
+.school-copy h2{margin:0 0 9px;font-size:22px}.school-copy p{margin:0;color:#858585;line-height:1.75;font-size:13px}
+.school-copy .quote{margin-top:15px;color:#a8a8a8;font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace}
+.school-stat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.feature{
+  border:1px solid var(--line);border-radius:18px;background:#0b0b0b;
+  padding:22px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between
+}
+.feature h2{margin:10px 0 7px;font-size:23px}.feature p{margin:0;color:#7d7d7d;line-height:1.7;font-size:13px}
+.feature-index{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#5b5b5b;letter-spacing:.12em}
+.feature-actions{display:flex;gap:9px;flex-wrap:wrap}
+
+.messages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.message{
+  border:1px solid var(--line);border-radius:14px;padding:18px;background:#0b0b0b;
+  color:#858585;font-size:13px;line-height:1.75
+}
+.message b{color:#e2e2e2}
+
+footer{
+  padding:36px 0;color:#4f4f4f;text-align:center;
+  font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em
+}
+
+/* Modals: fully lock the underlying page */
+.modal-wrap{
+  position:fixed;inset:0;z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(0,0,0,.84);backdrop-filter:blur(11px);
+  opacity:0;visibility:hidden;transition:.18s
+}
+.modal-wrap.open{opacity:1;visibility:visible}
+.modal{
+  width:min(980px,100%);max-height:92vh;overflow:auto;
+  border:1px solid #2d2d2d;border-radius:18px;background:#070707;
+  box-shadow:0 28px 100px rgba(0,0,0,.78)
+}
+.modal-head{
+  position:sticky;top:0;z-index:2;padding:13px 15px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--line);background:rgba(7,7,7,.94);backdrop-filter:blur(9px)
+}
+.modal-head h3{margin:0;font-size:15px}
+.close{border:1px solid #2a2a2a;background:#0c0c0c;color:#aaa;border-radius:9px;padding:8px 10px}
+.modal-body{padding:24px}
+
+/* Download */
+.download-stage{padding:10px}
+.dl-top{
+  display:flex;justify-content:space-between;gap:15px;align-items:end;
+  padding-bottom:18px;border-bottom:1px solid #1a1a1a
+}
+.file-title{display:flex;gap:15px;align-items:center}
+.file-emoji{font-size:56px}
+.file-title h2{margin:0;font-size:25px}.file-title p{margin:5px 0 0;color:#666;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+.dl-alert{
+  margin-top:18px;padding:15px;border:1px solid rgba(255,68,92,.28);
+  border-radius:13px;background:rgba(255,68,92,.045);color:#ff9ba7;font-size:12px;line-height:1.7
+}
+.dl-console{
+  margin-top:15px;border:1px solid #1d1d1d;border-radius:14px;overflow:hidden;background:#080808
+}
+.dl-console-head{padding:11px 13px;border-bottom:1px solid #181818;color:#686868;font:10px ui-monospace,SFMono-Regular,Menlo,monospace}
+.dl-output{padding:16px;font:12px/1.85 ui-monospace,SFMono-Regular,Menlo,monospace;color:#8d8d8d;min-height:165px}
+.dl-progress{height:10px;background:#151515;border-radius:99px;overflow:hidden;margin:0 16px 16px}
+.dl-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),#ff9ba7)}
+.dl-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.dl-reveal{
+  display:none;margin-top:16px;padding:18px;border-radius:14px;
+  border:1px solid rgba(98,255,155,.25);background:rgba(98,255,155,.035)
+}
+.dl-reveal.open{display:block;animation:fade .2s ease}
+.dl-reveal h3{margin:0 0 7px;color:var(--green);font-size:22px}.dl-reveal p{margin:0;color:#808080;font-size:13px;line-height:1.7}
+
+/* Scanner */
+.scanner-grid{display:grid;grid-template-columns:290px 1fr;gap:24px;align-items:center}
+.ring{width:245px;height:245px;border-radius:50%;margin:auto;display:grid;place-items:center;background:conic-gradient(var(--green) 0deg,#172019 0deg);position:relative}
+.ring:after{content:"";position:absolute;inset:14px;border-radius:50%;background:#070707;border:1px solid #171717}
+.ring-center{position:relative;z-index:1;text-align:center}.percent{font-size:48px;font-weight:800}.scan-state{margin-top:4px;color:#686868;font:10px ui-monospace,SFMono-Regular,Menlo,monospace}
+.scan-list{border:1px solid #1b1b1b;border-radius:14px;overflow:hidden}
+.scan-row{padding:12px 14px;border-bottom:1px solid #131313;color:#666;font:12px ui-monospace,SFMono-Regular,Menlo,monospace}
+.scan-row:last-child{border-bottom:0}.scan-row.active{background:#0b0b0b;color:#fff}.scan-row.active:before{content:"→ ";color:var(--amber)}.scan-row.done:before{content:"✓ ";color:var(--green)}
+.scan-result{
+  margin-top:19px;padding:18px;border:1px solid rgba(255,68,92,.3);border-radius:14px;background:rgba(255,68,92,.045);text-align:center
+}
+.scan-result h3{margin:0 0 8px;color:#ff8c9a;font-size:24px}.scan-result p{margin:0;color:#8d8d8d;font-size:13px;line-height:1.7}
+
+/* Terminal */
+.term{background:#030403;border:1px solid #18351f;border-radius:14px;padding:16px;color:#b8ffca}
+.term-out{min-height:330px;max-height:48vh;overflow:auto;white-space:pre-wrap;font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace}
+.term-line{display:flex;gap:8px;border-top:1px solid #102015;padding-top:10px}.prompt{color:var(--green)}.term-in{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#e0ffe8}
+
+/* Secret */
+.secret{text-align:center;padding:30px 15px}.secret-icon{font-size:70px}.secret h2{font-size:30px;margin:12px 0}.secret p{color:#828282;line-height:1.7}
+.dont-btn{margin-top:10px}
+
+/* Serious */
+.locked-panel{padding:24px;text-align:center}
+.code-row{display:flex;gap:9px;max-width:480px;margin:20px auto 0}
+.code-input{flex:1;min-width:0;border:1px solid #2a2a2a;background:#090909;color:#fff;border-radius:10px;padding:12px 13px;outline:0}
+.code-input:focus{border-color:#4b4b4b}
+.cooldown{min-height:19px;margin-top:11px;color:#ff8d9b;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+.empty-secret{min-height:420px;display:grid;place-items:center;text-align:center}
+.empty-secret .mark{font-size:72px;color:#666}.empty-secret h2{margin:10px 0;font-size:30px}.empty-secret p{color:#666}
+
+/* Popup storm */
+#popupLayer{position:fixed;inset:0;z-index:15000;pointer-events:none}
+.popup{
+  position:absolute;width:min(350px,82vw);padding:13px;
+  background:#101010;border:1px solid #54202a;border-radius:10px;
+  box-shadow:0 20px 70px rgba(0,0,0,.58);
+  color:#e5e5e5;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;
+  animation:pop .15s ease
+}
+.popup .ph{display:flex;justify-content:space-between;gap:10px;padding-bottom:8px;margin-bottom:9px;border-bottom:1px solid #272727;color:#ff7b8a}
+.popup small{color:#676767}
+@keyframes pop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+
+.toast{
+  position:fixed;left:50%;bottom:18px;z-index:20000;transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;max-width:min(92vw,700px);padding:11px 14px;
+  border:1px solid #2c2c2c;border-radius:10px;background:#0a0a0a;color:#ddd;text-align:center;font-size:12px;transition:.2s
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+body.glitch{animation:gl .11s steps(2) 4}
+@keyframes gl{30%{transform:translateX(2px);filter:hue-rotate(22deg)}65%{transform:translateX(-3px);filter:contrast(1.25)}}
+
+
+/* Mobile-first refinements */
+@media (max-width: 760px) {
+  html, body { width:100%; max-width:100%; overflow-x:hidden; }
+  body { min-width:0; }
+  .topbar {
+    height: 60px;
+    width:100%;
+  }
+  .topbar-inner {
+    width:100%;
+    max-width:none;
+    min-width:0;
+    padding:0 12px;
+  }
+  .brand {
+    font-size:15px;
+    white-space:nowrap;
+  }
+  .top-actions { gap:6px; }
+  .icon {
+    width:40px;
+    height:40px;
+    flex:0 0 40px;
+  }
+
+  .shell {
+    width:100%;
+    max-width:none;
+    padding:0 12px 48px;
+  }
+
+  .home {
+    min-height:calc(100svh - 60px);
+    width:100%;
+    padding:20px 4px;
+    display:grid;
+    place-items:center;
+  }
+  .home-inner {
+    width:100%;
+    max-width:100%;
+    padding:24px 8px;
+  }
+  .home-logo {
+    font-size:clamp(42px, 13vw, 78px);
+    line-height:.9;
+    word-break:keep-all;
+    overflow-wrap:normal;
+  }
+  .home-sub {
+    font-size:9px;
+    letter-spacing:.18em;
+    line-height:1.6;
+  }
+  .home-btn {
+    width:min(240px, 76vw);
+    min-width:0;
+    padding:13px 18px;
+  }
+
+  .menu {
+    top:68px;
+    right:8px;
+    width:calc(100vw - 16px);
+    max-width:380px;
+  }
+
+  .page-head {
+    width:100%;
+    padding:38px 0 20px;
+  }
+  .page-head h1 {
+    font-size:clamp(44px, 14vw, 64px);
+    line-height:.9;
+    margin:14px 0 14px;
+  }
+  .page-head p {
+    font-size:13px;
+    line-height:1.65;
+    max-width:none;
+  }
+
+  .panel,
+  .panel-pad {
+    width:100%;
+    max-width:100%;
+  }
+  .panel-pad { padding:15px; }
+
+  .grid2,
+  .grid3,
+  .card-grid,
+  .messages,
+  .scanner-grid {
+    grid-template-columns:1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+  .kpi {
+    min-width:0;
+    padding:14px 12px;
+  }
+  .kpi strong {
+    font-size:18px;
+    overflow-wrap:anywhere;
+  }
+
+  .school-body {
+    grid-template-columns:1fr;
+  }
+  .school-stat {
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+
+  .feature {
+    min-height:195px;
+  }
+
+  .modal-wrap {
+    inset:0;
+    width:100vw;
+    height:100svh;
+    padding:0;
+    align-items:flex-start;
+  }
+  .modal {
+    width:100%;
+    max-width:none;
+    height:auto;
+    max-height:100svh;
+    min-height:100svh;
+    border-radius:0;
+    border-left:0;
+    border-right:0;
+    display:flex;
+    flex-direction:column;
+  }
+  .modal-head {
+    min-height:58px;
+    flex:0 0 58px;
+    padding:10px 12px;
+  }
+  .modal-body {
+    width:100%;
+    flex:1 1 auto;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:14px 12px 24px;
+  }
+
+  .download-stage {
+    width:100%;
+    padding:4px 0;
+  }
+  .dl-top {
+    display:block;
+    padding-bottom:16px;
+  }
+  .file-title {
+    align-items:flex-start;
+  }
+  .file-emoji {
+    font-size:45px;
+    flex:0 0 auto;
+  }
+  .file-title h2 {
+    font-size:21px;
+    line-height:1.1;
+    overflow-wrap:anywhere;
+  }
+  .file-title p {
+    line-height:1.5;
+    overflow-wrap:anywhere;
+  }
+  .dl-alert {
+    font-size:11px;
+    line-height:1.65;
+  }
+  .dl-console {
+    width:100%;
+  }
+  .dl-output {
+    min-height:160px;
+    max-height:35svh;
+    overflow:auto;
+    font-size:11px;
+    line-height:1.75;
+    word-break:break-word;
+  }
+  .dl-actions {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .dl-actions .btn {
+    width:100%;
+    min-width:0;
+  }
+
+  .ring {
+    width:min(205px, 58vw);
+    height:min(205px, 58vw);
+  }
+  .percent {
+    font-size:clamp(36px, 11vw, 46px);
+  }
+  .scan-list {
+    width:100%;
+  }
+  .scan-row {
+    font-size:11px;
+    padding:11px 12px;
+  }
+
+  .term-out {
+    min-height:48svh;
+    max-height:54svh;
+    font-size:11px;
+  }
+  .term-line {
+    align-items:flex-start;
+  }
+  .term-in {
+    font-size:12px;
+  }
+
+  .code-row {
+    display:grid;
+    grid-template-columns:1fr;
+    width:100%;
+    max-width:none;
+  }
+  .code-input,
+  #unlockBtn {
+    width:100%;
+    min-height:46px;
+  }
+
+  .empty-secret {
+    min-height:55svh;
+    padding:20px;
+  }
+
+  .popup {
+    width:min(300px, 78vw);
+    font-size:10px;
+  }
+
+  footer {
+    padding:26px 0;
+    line-height:1.6;
+  }
+}
+
+/* Ultra-small phones */
+@media (max-width: 390px) {
+  .shell { padding-left:9px; padding-right:9px; }
+  .topbar-inner { padding:0 9px; }
+  .home-logo { font-size:42px; }
+  .kpi-grid,
+  .school-stat { grid-template-columns:1fr; }
+  .dl-actions { grid-template-columns:1fr; }
+  .page-head h1 { font-size:43px; }
+}
+
+/* Tall portrait phones */
+@media (max-width: 760px) and (min-height: 800px) {
+  .home { min-height:calc(100svh - 60px); }
+  .home-inner { transform:translateY(-2vh); }
+}
+
+/* Landscape phones */
+@media (max-width: 900px) and (orientation:landscape) {
+  .home {
+    min-height:calc(100svh - 60px);
+    padding:14px 0;
+  }
+  .home-inner { padding:16px; }
+  .home-logo { font-size:clamp(38px, 10vw, 62px); }
+  .modal {
+    min-height:100svh;
+  }
+  .modal-body {
+    padding-bottom:18px;
+  }
+}
+
+@media(max-width:1050px){
+  .card-grid{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+  .school-body{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .topbar{height:62px}.topbar-inner{padding:0 13px}.shell{padding:0 13px 65px}
+  .live{display:none}.menu{right:12px;top:74px}
+  .home{min-height:calc(100vh - 62px)}.home-inner{padding:36px 10px}
+  .home-logo{font-size:clamp(50px,15vw,88px)}.home-sub{font-size:9px}
+  .page-head{padding:48px 0 23px}.page-head h1{font-size:54px}
+  .card-grid{grid-template-columns:1fr}.grid3,.messages{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}
+  .modal-wrap{padding:8px}.modal{max-height:95vh;border-radius:15px}.modal-body{padding:14px}
+  .scanner-grid{grid-template-columns:1fr}.ring{width:205px;height:205px}.percent{font-size:40px}
+  .dl-top{align-items:start}.file-title h2{font-size:22px}.file-emoji{font-size:48px}
+  .code-row{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* Typography safety */
+.page-head h1,
+.home-logo,
+.file-title h2,
+.school-copy h2,
+.feature h2,
+.empty-secret h2,
+.modal-head h3,
+.page-head p,
+.file-title p {
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+.page-head h1 { font-size:clamp(42px,7vw,92px); }
+.file-title h2 { font-size:clamp(20px,2.2vw,28px); }
+@media (max-width:760px){
+  .page-head h1{font-size:clamp(38px,12vw,58px);letter-spacing:-.045em}
+  .page-head p{max-width:100%;font-size:13px}
+  .home-logo{font-size:clamp(40px,13vw,78px)}
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" id="homeLink" class="brand">NECUM<span>.ONLINE</span></a>
+    <div class="top-actions">
+      <div class="live"><i></i>SYSTEM OPERATIONAL</div>
+      <button class="icon" id="soundBtn" aria-label="Toggle sound">🔇</button>
+      <button class="icon" id="menuBtn" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<nav class="menu" id="menu">
+  <a href="#" data-route="home">Home <small>01</small></a>
+  <a href="#" data-route="download">Download.exe <small>02</small></a>
+  <a href="#" data-route="student">Student <small>03</small></a>
+  <a href="#" data-route="teacher">Teacher <small>04</small></a>
+  <a href="#" data-route="serious">Serious <small>05</small></a>
+  <a href="#" data-route="interactive">Interactive <small>06</small></a>
+  <div class="menu-divider"></div>
+  <button data-modal="scanner">PC Scanner <small>utility</small></button>
+  <button data-modal="terminal">Terminal <small>utility</small></button>
+  <button data-modal="secret">Restricted Button <small>utility</small></button>
+</nav>
+
+<main class="shell">
+
+<!-- HOME: intentionally minimal -->
+<section class="view active" id="homeView">
+  <div class="home">
+    <div class="home-inner">
+      <div class="home-logo">NECUM<span>.ONLINE</span></div>
+      <div class="home-rule"></div>
+      <div class="home-sub">ACCESS / DOWNLOAD / EXPLORE</div>
+      <button class="btn green home-btn" data-route="download">Download</button>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="view" id="downloadView">
+  <div class="page-head">
+    <button class="btn back" data-route="home">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">MODULE / 02</div>
+    <h1>DOWNLOAD.EXE</h1>
+    <p>File transfer interface.</p>
+  </div>
+
+  <div class="panel panel-pad">
+    <div class="download-stage">
+      <div class="dl-top">
+        <div class="file-title">
+          <div class="file-emoji">🦠</div>
+          <div>
+            <h2>VIRUS_PAYLOAD.EXE</h2>
+            <p>release 3.8.1 · 14.7 MB · executable</p>
+          </div>
+        </div>
+        <div class="eyebrow">REMOTE PACKAGE</div>
+      </div>
+
+      <div class="dl-alert">
+        ⚠️ <b>SECURITY WARNING</b><br>
+        The file signature could not be verified.
+      </div>
+
+      <div class="dl-console">
+        <div class="dl-console-head">DOWNLOAD CONSOLE</div>
+        <div class="dl-output" id="dlOutput">
+          <div>Connecting to remote host...</div>
+          <div>Resolving package...</div>
+          <div>Waiting for transfer...</div>
+        </div>
+        <div class="dl-progress"><i id="dlFill"></i></div>
+      </div>
+
+      <div class="dl-actions">
+        <button class="btn red" id="downloadStart">⬇ Download file</button>
+        <button class="btn" data-route="home">Cancel</button>
+      </div>
+
+      <div class="dl-reveal" id="dlReveal">
+        <h3>😂 GOTCHA</h3>
+        <p>The download was harmless. The only file delivered to the device is a plain text report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE -->
+<section class="view" id="interactiveView">
+  <div class="page-head">
+    <button class="btn back" data-route="home">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">MODULE / INTERACTIVE</div>
+    <h1>INTERACTIVE</h1>
+    <p>Small experiments, visual tricks and harmless browser interactions.</p>
+  </div>
+
+  <div class="card-grid">
+    <article class="feature">
+      <div>
+        <div class="feature-index">01 / SIGNAL</div>
+        <h2>Signal Test</h2>
+        <p>Run a visual signal test and watch the interface react to input.</p>
+      </div>
+      <div class="feature-actions"><button class="btn green" id="signalBtn">Run test</button></div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <div class="feature-index">02 / TYPE</div>
+        <h2>Typing Test</h2>
+        <p>Enter a short phrase. The system measures speed and gives you a fictional rating.</p>
+      </div>
+      <div class="feature-actions"><button class="btn" id="typingBtn">Start</button></div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <div class="feature-index">03 / GLITCH</div>
+        <h2>Glitch Test</h2>
+        <p>Trigger a short visual distortion without leaving the page.</p>
+      </div>
+      <div class="feature-actions"><button class="btn red" id="glitchBtn">Trigger</button></div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <div class="feature-index">04 / RANDOM</div>
+        <h2>Random Event</h2>
+        <p>Request a random system event. The interface will decide what happens.</p>
+      </div>
+      <div class="feature-actions"><button class="btn amber" id="randomBtn">Generate</button></div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <div class="feature-index">05 / COLOR</div>
+        <h2>Screen Test</h2>
+        <p>Cycle through a few controlled display modes and return to normal.</p>
+      </div>
+      <div class="feature-actions"><button class="btn" id="screenBtn">Test screen</button></div>
+    </article>
+
+    <article class="feature">
+      <div>
+        <div class="feature-index">06 / COUNTER</div>
+        <h2>Click Counter</h2>
+        <p>A deliberately pointless counter. See how high you can take it.</p>
+      </div>
+      <div class="feature-actions">
+        <button class="btn" id="counterBtn">Click <span id="counterValue">0</span></button>
+      </div>
+    </article>
+  </div>
+
+  <div class="panel panel-pad" id="typingPanel" style="display:none;margin-top:18px">
+    <div class="eyebrow">TYPING TEST</div>
+    <h2 style="margin:8px 0 5px">Type this exactly:</h2>
+    <div class="row" style="margin:12px 0">NECUM SYSTEM READY</div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap">
+      <input id="typingInput" class="code-input" style="max-width:420px" placeholder="Type here">
+      <button class="btn green" id="typingCheck">Check</button>
+    </div>
+    <div class="note" id="typingResult" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- STUDENT -->
+<section class="view" id="studentView">
+  <div class="page-head">
+    <button class="btn back" data-route="home">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">MODULE / 03</div>
+    <h1>STUDENT</h1>
+    <p>Classroom status overview.</p>
+  </div>
+  <div class="panel panel-pad">
+    <div class="kpi-grid">
+      <div class="kpi"><small>Attention span</small><strong>12%</strong></div>
+      <div class="kpi"><small>Motivation</small><strong>3%</strong></div>
+      <div class="kpi"><small>Homework.exe</small><strong class="red-t">NOT FOUND</strong></div>
+      <div class="kpi"><small>Weekend readiness</small><strong class="green-t">100%</strong></div>
+    </div>
+    <div class="messages" style="margin-top:14px">
+      <div class="message"><b>09:12</b><br>“I will do it after school.”</div>
+      <div class="message"><b>10:03</b><br>“Was there homework?”</div>
+      <div class="message"><b>10:05</b><br>Homework.exe remains missing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHER -->
+<section class="view" id="teacherView">
+  <div class="page-head">
+    <button class="btn back" data-route="home">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">MODULE / 04</div>
+    <h1>TEACHER</h1>
+    <p>Classroom control overview.</p>
+  </div>
+  <div class="panel panel-pad">
+    <div class="kpi-grid">
+      <div class="kpi"><small>Class control</small><strong class="green-t">91%</strong></div>
+      <div class="kpi"><small>Coffee reserve</small><strong>76%</strong></div>
+      <div class="kpi"><small>Homework assigned</small><strong class="red-t">YES</strong></div>
+      <div class="kpi"><small>Questions pending</small><strong>∞</strong></div>
+    </div>
+    <div class="messages" style="margin-top:14px">
+      <div class="message"><b>09:40</b><br>“Please stop talking.”</div>
+      <div class="message"><b>09:41</b><br>Whisper detected.</div>
+      <div class="message"><b>09:42</b><br>Teacher patience: 64%.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERIOUS -->
+<section class="view" id="seriousView">
+  <div class="page-head">
+    <button class="btn back" data-route="home">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">MODULE / 05</div>
+    <h1>SERIOUS</h1>
+    <p>Restricted access.</p>
+  </div>
+  <div class="panel locked-panel">
+    <div class="eyebrow">ACCESS CONTROL</div>
+    <h2 style="margin:10px 0 0">Restricted area</h2>
+    <div class="code-row">
+      <input id="seriousCode" class="code-input" maxlength="4" inputmode="numeric" autocomplete="off" placeholder="4-digit access code">
+      <button class="btn" id="unlockBtn">Unlock</button>
+    </div>
+    <div class="cooldown" id="cooldown"></div>
+  </div>
+</section>
+
+<!-- SERIOUS UNLOCKED -->
+<section class="view" id="seriousUnlockedView">
+  <div class="page-head">
+    <button class="btn back" data-route="serious">← Back</button>
+    <div class="eyebrow" style="margin-top:25px">RESTRICTED / LEVEL 2</div>
+    <h1>ACCESS GRANTED</h1>
+    <p>Restricted workspace.</p>
+  </div>
+  <div class="panel empty-secret">
+    <div>
+      <div class="mark">■</div>
+      <h2>EMPTY WORKSPACE</h2>
+      <p>No modules have been deployed here.</p>
+    </div>
+  </div>
+</section>
+
+<footer>NECUM.ONLINE · 2026</footer>
+</main>
+
+<!-- PC SCANNER -->
+<div class="modal-wrap" id="scannerModal">
+ <div class="modal">
+  <div class="modal-head"><h3>🖥️ PC SCANNER</h3><button class="close" data-close>Close</button></div>
+  <div class="modal-body">
+    <div class="scanner-grid">
+      <div>
+        <div class="ring" id="ring">
+          <div class="ring-center">
+            <div class="percent" id="scanPercent">0%</div>
+            <div class="scan-state" id="scanState">READY</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:14px"><button class="btn green" id="scanStart">Run scan</button></div>
+      </div>
+      <div class="scan-list" id="scanList">
+        <div class="scan-row">Operating system</div>
+        <div class="scan-row">Browser sessions</div>
+        <div class="scan-row">Memory</div>
+        <div class="scan-row">Homework.exe</div>
+        <div class="scan-row">Common sense</div>
+      </div>
+    </div>
+    <div class="scan-result hidden" id="scanResult">
+      <h3>⚠️ 3 “THREATS” FOUND</h3>
+      <button class="btn" id="scanAgain">Run again</button>
+    </div>
+  </div>
+ </div>
+</div>
+
+<!-- TERMINAL -->
+<div class="modal-wrap" id="terminalModal">
+ <div class="modal">
+  <div class="modal-head"><h3>⌨️ NECUM TERMINAL</h3><button class="close" data-close>Close</button></div>
+  <div class="modal-body">
+    <div class="term">
+      <div class="term-out" id="termOut"></div>
+      <div class="term-line">
+        <span class="prompt">guest@necum:~$</span>
+        <input class="term-in" id="termInput" autocomplete="off" autocapitalize="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<!-- RESTRICTED BUTTON -->
+<div class="modal-wrap" id="secretModal">
+ <div class="modal">
+  <div class="modal-head"><h3>⚠️ RESTRICTED CONTROL</h3><button class="close" data-close>Close</button></div>
+  <div class="modal-body">
+    <div class="secret">
+      <div class="secret-icon">⛔</div>
+      <h2>DO NOT CLICK</h2>
+      <p>Restricted interface.</p>
+      <button class="btn red dont-btn" id="dontClick">DO NOT CLICK</button>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div id="popupLayer"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+let sound=false,scanBusy=false,downloadBusy=false,lockedUntil=0,popupInterval=null;
+
+function toast(text){
+  const t=$("#toast");t.textContent=text;t.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function beep(freq=440,duration=.05){
+  if(!sound)return;
+  try{
+    const C=window.__audio||(window.__audio=new (window.AudioContext||window.webkitAudioContext)());
+    const o=C.createOscillator(),g=C.createGain();
+    o.type="square";o.frequency.value=freq;g.gain.value=.02;o.connect(g);g.connect(C.destination);o.start();
+    g.gain.exponentialRampToValueAtTime(.0001,C.currentTime+duration);o.stop(C.currentTime+duration);
+  }catch(e){}
+}
+function lockPage(){
+  document.documentElement.classList.add("locked");
+  document.body.classList.add("locked");
+  document.body.style.position="fixed";
+  document.body.style.width="100%";
+  document.body.style.left="0";
+  document.body.style.right="0";
+  document.body.style.top="0";
+}
+function unlockPage(){
+  if($(".modal-wrap.open"))return;
+  document.documentElement.classList.remove("locked");
+  document.body.classList.remove("locked");
+  document.body.style.position="";
+  document.body.style.width="";
+  document.body.style.left="";
+  document.body.style.right="";
+  document.body.style.top="";
+}
+function openModal(name){
+  const m=document.getElementById(name+"Modal");
+  if(!m)return;
+  m.classList.add("open");lockPage();
+  if(name==="terminal")setTimeout(()=>$("#termInput").focus(),80);
+}
+function closeModals(){
+  $$(".modal-wrap.open").forEach(x=>x.classList.remove("open"));
+  unlockPage();
+}
+$$("[data-modal]").forEach(b=>b.addEventListener("click",()=>{
+  $("#menu").classList.remove("open");
+  openModal(b.dataset.modal);
+}));
+$$("[data-close]").forEach(b=>b.addEventListener("click",closeModals));
+$$(".modal-wrap").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeModals()}));
+
+/* Router */
+function route(name){
+  $$(".view").forEach(v=>v.classList.remove("active"));
+  const id=name==="home"?"homeView":name==="download"?"downloadView":name==="student"?"studentView":name==="teacher"?"teacherView":name==="serious"?"seriousView":name==="interactive"?"interactiveView":name==="seriousUnlocked"?"seriousUnlockedView":"homeView";
+  $("#"+id).classList.add("active");
+  $("#menu").classList.remove("open");
+  closeModals();
+  window.scrollTo({top:0,behavior:"auto"});
+}
+$$("[data-route]").forEach(el=>el.addEventListener("click",e=>{e.preventDefault();route(el.dataset.route)}));
+$("#homeLink").addEventListener("click",e=>{e.preventDefault();route("home")});
+$("#menuBtn").addEventListener("click",()=>$("#menu").classList.toggle("open"));
+document.addEventListener("click",e=>{
+  if(!e.target.closest("#menu")&&!e.target.closest("#menuBtn"))$("#menu").classList.remove("open");
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeModals();$("#menu").classList.remove("open")}
+});
+$("#soundBtn").addEventListener("click",()=>{
+  sound=!sound;$("#soundBtn").textContent=sound?"🔊":"🔇";toast(sound?"Sound enabled":"Sound disabled");beep(660,.06);
+});
+
+/* Download experience */
+$("#downloadStart").addEventListener("click",async()=>{
+  if(downloadBusy)return;
+  downloadBusy=true;
+  const btn=$("#downloadStart"), fill=$("#dlFill"), out=$("#dlOutput");
+  btn.disabled=true;btn.textContent="Preparing...";
+  out.innerHTML="";
+  const lines=[
+    "Connecting to remote host...",
+    "Host response: 200 OK",
+    "Resolving package VIRUS_PAYLOAD.EXE...",
+    "Checking package signature...",
+    "Signature: UNKNOWN",
+    "Starting transfer..."
+  ];
+  for(const line of lines){
+    const d=document.createElement("div");d.textContent=line;out.appendChild(d);
+    out.scrollTop=out.scrollHeight;
+    await new Promise(r=>setTimeout(r,240));
+  }
+  for(let p=0;p<=100;p++){
+    fill.style.width=p+"%";
+    if(p%10===0){
+      const d=document.createElement("div");d.textContent=p<100?`Transferring payload... ${p}%`:"Transfer complete.";
+      out.appendChild(d);out.scrollTop=out.scrollHeight;beep(240+p*2,.025);
+    }
+    await new Promise(r=>setTimeout(r,18));
+  }
+  /* Actual download is harmless plain text, with the visual interface pretending otherwise. */
+  const blob=new Blob([
+    "NECUM.ONLINE\n",
+    "TRANSFER REPORT\n\n",
+    "This file contains no executable code.\n",
+    "Nothing was installed or executed.\n"
+  ],{type:"text/plain"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="VIRUS_PAYLOAD_REPORT.txt";
+  document.body.appendChild(a);a.click();a.remove();
+
+  btn.textContent="Download again";
+  await new Promise(r=>setTimeout(r,900));
+  $("#dlReveal").classList.add("open");
+  const d=document.createElement("div");d.textContent="Remote host: connection closed.";out.appendChild(d);
+  toast("Transfer complete.");
+  downloadBusy=false;btn.disabled=false;
+});
+
+/* Scanner */
+async function scan(){
+  if(scanBusy)return;
+  scanBusy=true;$("#scanStart").disabled=true;$("#scanResult").classList.add("hidden");
+  const rows=$$("#scanList .scan-row");rows.forEach(x=>x.classList.remove("active","done"));
+  const state=[
+    "Checking operating system...",
+    "Counting browser sessions...",
+    "Reading memory...",
+    "Searching for Homework.exe...",
+    "Checking common sense..."
+  ];
+  let p=0;
+  for(let i=0;i<rows.length;i++){
+    rows[i].classList.add("active");$("#scanState").textContent=state[i];
+    const target=Math.round((i+1)*100/rows.length);
+    while(p<target){
+      p++;
+      $("#scanPercent").textContent=p+"%";
+      $("#ring").style.background=`conic-gradient(var(--green) ${p*3.6}deg,#172019 0deg)`;
+      await new Promise(r=>setTimeout(r,15));
+    }
+    rows[i].classList.remove("active");rows[i].classList.add("done");beep(520,.02);
+  }
+  $("#scanState").textContent="COMPLETE";
+  setTimeout(()=>$("#scanResult").classList.remove("hidden"),220);
+  $("#scanStart").disabled=false;scanBusy=false;
+}
+$("#scanStart").addEventListener("click",scan);
+$("#scanAgain").addEventListener("click",scan);
+
+/* Terminal */
+const termOut=$("#termOut"),termInput=$("#termInput");
+function print(x=""){const d=document.createElement("div");d.textContent=x;termOut.appendChild(d);termOut.scrollTop=termOut.scrollHeight}
+print("NECUM TERMINAL v7.0");print("Type 'help' for available commands.");print("");
+function runCmd(raw){
+  const c=raw.trim().toLowerCase();
+  if(!c)return;
+  print("guest@necum:~$ "+raw);
+  const map={
+    scan:["Diagnostic complete.","Real threats: 0.","Fake threats: 3."],
+    whoami:["Session identified.","Access level: standard."],
+    teacher:["Teacher module available in the main menu."],
+    student:["Student module available in the main menu."],
+    secret:["Restricted control available in the main menu."],
+    hack:["Authorizing...","████████████████ 100%","Request processed."],
+    sudo:["Request denied."],
+    "69":["nice."],
+    "1337":["LEET detected."]
+  };
+  if(c==="clear"){termOut.innerHTML="";print("Screen cleared.");}
+  else if(c==="chaos"){print("Override enabled.");startPopupStorm();}
+  else if(map[c])map[c].forEach(print);
+  else print("Unknown command.");
+  termInput.value="";beep(420,.02);
+}
+termInput.addEventListener("keydown",e=>{if(e.key==="Enter")runCmd(termInput.value)});
+$("#termOut").addEventListener("click",()=>termInput.focus());
+
+/* Secret button */
+$("#dontClick").addEventListener("click",()=>{
+  closeModals();
+  setTimeout(()=>startPopupStorm(),120);
+});
+
+/* Visual warning windows — no real system access */
+function clearPopups(){
+  clearInterval(popupInterval);popupInterval=null;$("#popupLayer").innerHTML="";
+}
+function startPopupStorm(){
+  if(popupInterval)return;
+  $("#popupLayer").innerHTML="";
+  let count=0;
+  popupInterval=setInterval(()=>{
+    if(count>=11){clearPopups();toast("Session restored.");return}
+    addPopup(count++);
+  },520);
+}
+function addPopup(i){
+  const p=document.createElement("div");p.className="popup";
+  const messages=[
+    "Threat detected: VIRUS_PAYLOAD",
+    "Critical process interrupted",
+    "Encrypted file warning",
+    "Unauthorized process found",
+    "System alert: suspicious activity",
+    "Threat quarantine failed",
+    "Security service unavailable",
+    "Memory scan returned an anomaly",
+    "Network connection flagged",
+    "Unknown executable detected",
+    "Security alert"
+  ];
+  p.innerHTML=`<div class="ph"><span>⚠️ ${messages[i]}</span><small>ALERT</small></div><div>Action required.</div><div style="margin-top:6px;color:#777">Reference: NCM-${1000+i}</div>`;
+  const maxX=Math.max(8,window.innerWidth-(Math.min(350,window.innerWidth*.82))-8);
+  const maxY=Math.max(76,window.innerHeight-160);
+  p.style.left=(8+Math.random()*Math.max(10,maxX-8))+"px";
+  p.style.top=(72+Math.random()*Math.max(10,maxY-72))+"px";
+  if(i%3===1)p.style.transform="rotate(45deg)";
+  if(i%4===2)p.style.transform="rotate(-18deg)";
+  $("#popupLayer").appendChild(p);
+}
+
+
+/* Interactive modules */
+function flashMessage(text){
+  toast(text);
+}
+function temporaryGlow(el){
+  if(!el)return;
+  el.style.boxShadow="0 0 35px rgba(98,255,155,.22)";
+  el.style.borderColor="#365b45";
+  setTimeout(()=>{el.style.boxShadow="";el.style.borderColor="";},700);
+}
+$("#signalBtn")?.addEventListener("click",()=>{
+  let n=0;
+  const b=$("#signalBtn"); b.disabled=true;
+  b.textContent="Running...";
+  const timer=setInterval(()=>{
+    n+=20;
+    if(n>=100){
+      clearInterval(timer);b.textContent="Complete";b.disabled=false;
+      flashMessage("Signal test complete.");
+    }
+  },180);
+});
+$("#glitchBtn")?.addEventListener("click",()=>{
+  document.body.classList.remove("glitch");void document.body.offsetWidth;document.body.classList.add("glitch");
+  setTimeout(()=>document.body.classList.remove("glitch"),600);
+});
+$("#randomBtn")?.addEventListener("click",()=>{
+  const events=[
+    "Background signal stable.",
+    "Unexpected silence detected.",
+    "Interface response: normal.",
+    "Random event processed.",
+    "No useful information found.",
+    "Everything is exactly where it should be."
+  ];
+  flashMessage(events[Math.floor(Math.random()*events.length)]);
+});
+$("#screenBtn")?.addEventListener("click",()=>{
+  const page=document.body;
+  const old=page.style.filter;
+  page.style.filter="contrast(1.2) saturate(.5)";
+  setTimeout(()=>page.style.filter=old,850);
+  flashMessage("Display test complete.");
+});
+let clicks=0;
+$("#counterBtn")?.addEventListener("click",()=>{
+  clicks++;$("#counterValue").textContent=clicks;
+  temporaryGlow($("#counterBtn"));
+  if(clicks===10)flashMessage("10 clicks. Nothing useful happened.");
+  if(clicks===25)flashMessage("25 clicks. Still nothing.");
+});
+$("#typingBtn")?.addEventListener("click",()=>{
+  const panel=$("#typingPanel");
+  panel.style.display=panel.style.display==="none"?"block":"none";
+  if(panel.style.display==="block")$("#typingInput").focus();
+});
+$("#typingCheck")?.addEventListener("click",()=>{
+  const value=$("#typingInput").value.trim();
+  const result=$("#typingResult");
+  if(!value){result.textContent="Enter the phrase first.";return}
+  result.textContent=value==="NECUM SYSTEM READY"?"Match: 100%. Input accepted.":"Match incomplete. Try again.";
+});
+
+/* Serious lock / code 2224 */
+let cooldownTimer=null;
+function tickCooldown(){
+  const left=Math.max(0,lockedUntil-Date.now());
+  if(left<=0){$("#cooldown").textContent="";return}
+  const s=Math.ceil(left/1000);
+  $("#cooldown").textContent=`ACCESS LOCKED · ${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+  cooldownTimer=setTimeout(tickCooldown,1000);
+}
+$("#unlockBtn").addEventListener("click",()=>{
+  if(Date.now()<lockedUntil){toast("Access locked.");return}
+  const code=$("#seriousCode").value.trim();
+  if(code==="2224"){
+    $("#seriousCode").value="";
+    route("seriousUnlocked");
+    toast("Access granted.");
+  }else{
+    lockedUntil=Date.now()+300000;
+    tickCooldown();
+    $("#seriousCode").value="";
+    toast("Access denied.");
+    startPopupStorm();
+  }
+});
+
+/* Global keyboard escape */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeModals();clearPopups()}
+});
+})();
+</script>
+</body>
+</html>
